@@ -1,4 +1,6 @@
-﻿using FinacialTrackerApplication.Models;
+﻿using FinacialTrackerApplication.Interfaces;
+using FinacialTrackerApplication.Models;
+using FinacialTrackerApplication.Repositories;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,24 +14,26 @@ namespace FinancialTracker.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthRepository _IAuthRepository;
+        private readonly IUserRepository _IUserRepository;
 
         public static User user = new User();
 
-        public AuthController(IAuthRepository AuthRepository)
+        public AuthController(IAuthRepository AuthRepository, IUserRepository UserRepository)
         {
             _IAuthRepository = AuthRepository;
+            _IUserRepository = UserRepository;
         }
 
         [HttpPost("Register")]
         public async Task<ActionResult<User>> Register(UserRegisterModel request)
         {
-            _IAuthRepository.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var userAdded = _IUserRepository.AddUser(request);
+            if (!userAdded)
+            {
+                return BadRequest("User Not Added");
+            }
 
-            user.User_Name = request.Username;
-            user.PasswordSalt = passwordSalt;
-            user.Password = passwordHash;
-
-            return Ok(user);
+            return Ok("User Added");
         }
 
     }
