@@ -6,11 +6,8 @@ namespace FinancialTracker.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly DataContext _context;
-
         public AuthRepository(DataContext context)
         {
-            _context = context;
         }
 
         public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

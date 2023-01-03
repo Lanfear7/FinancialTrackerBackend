@@ -43,7 +43,7 @@ namespace FinacialTrackerApplication.Repositories
             }
             catch (Exception error)
             {
-                return false;
+                throw;
             }
             
         }
