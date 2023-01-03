@@ -36,7 +36,7 @@ namespace FinancialTracker.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -58,7 +58,7 @@ namespace FinancialTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -79,7 +79,7 @@ namespace FinancialTracker.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -99,7 +99,7 @@ namespace FinancialTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<byte[]>("Password")
                         .IsRequired()
@@ -115,28 +115,43 @@ namespace FinancialTracker.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.Budget", b =>
                 {
-                    b.HasOne("FinacialTrackerApplication.Models.User", null)
+                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
                         .WithMany("Budgets")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
                 {
-                    b.HasOne("FinacialTrackerApplication.Models.User", null)
+                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
                         .WithMany("Trackers")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.Transaction", b =>
                 {
-                    b.HasOne("FinacialTrackerApplication.Models.User", null)
+                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
                         .WithMany("Transactions")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.User", b =>

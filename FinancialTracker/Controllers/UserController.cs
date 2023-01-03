@@ -53,7 +53,8 @@ namespace FinacialTrackerApplication.Controllers
             {
                 return BadRequest("Wrong password");
             }
-            return Ok(user);
+            var token = _IAuthRepository.CreateJWT(user.ToArray()[0]);
+            return Ok(token);
         }
     }
 
