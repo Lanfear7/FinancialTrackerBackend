@@ -2,6 +2,7 @@
 using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinacialTrackerApplication.Repositories;
+using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,12 @@ namespace FinacialTrackerApplication.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _IUserRepository;
+        private readonly IAuthRepository _IAuthRepository;
 
-        public UserController(IUserRepository UserRepository)
+        public UserController(IUserRepository UserRepository, IAuthRepository AuthRepository)
         {
             _IUserRepository = UserRepository;
+            _IAuthRepository = AuthRepository;
         }
         
         [HttpGet]
@@ -41,12 +44,16 @@ namespace FinacialTrackerApplication.Controllers
         [Route("Login")]
         public async Task<ActionResult<string>> Login(UserLoginModel request)
         {
-            var checkUser = _IUserRepository.GetUserByEmail(request);
-            if(checkUser == null)
+            var user = _IUserRepository.GetUserByEmail(request);
+            if(user == null)
             {
                 return BadRequest("Email not found");
             }
-            return Ok(checkUser);
+            if (!_IAuthRepository.VerifyUserPassword(request.Password, user.ToArray()[0].Password, user.ToArray()[0].PasswordSalt))
+            {
+                return BadRequest("Wrong password");
+            }
+            return Ok(user);
         }
     }
 
