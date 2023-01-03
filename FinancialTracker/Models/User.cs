@@ -1,4 +1,6 @@
-﻿namespace FinacialTrackerApplication.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FinacialTrackerApplication.Models
 {
     public class User
     {

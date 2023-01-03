@@ -4,6 +4,7 @@ using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinacialTrackerApplication.Repositories
 {
@@ -21,9 +22,19 @@ namespace FinacialTrackerApplication.Repositories
 
         }
 
-        public ICollection<User> GetUsers()
+        public ICollection<User> GetAllUsers()
         {
             return _context.Users.OrderBy(u => u.Id).ToList();
+        }
+
+        public ICollection<User> GetUserByEmail(UserLoginModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if(user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
         }
 
         public bool AddUser(UserRegisterModel request)
@@ -44,8 +55,7 @@ namespace FinacialTrackerApplication.Repositories
             catch (Exception error)
             {
                 throw;
-            }
-            
+            } 
         }
 
 

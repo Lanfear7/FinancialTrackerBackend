@@ -22,7 +22,7 @@ namespace FinacialTrackerApplication.Controllers
         [Route("getUsers")]
         public IEnumerable<User> GetUsers()
         {
-            return _IUserRepository.GetUsers();
+            return _IUserRepository.GetAllUsers();
         }
 
         [HttpPost]
@@ -35,6 +35,18 @@ namespace FinacialTrackerApplication.Controllers
                 return BadRequest("Unable to create user");
             }
             return Ok("User was created");
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<ActionResult<string>> Login(UserLoginModel request)
+        {
+            var checkUser = _IUserRepository.GetUserByEmail(request);
+            if(checkUser == null)
+            {
+                return BadRequest("Email not found");
+            }
+            return Ok(checkUser);
         }
     }
 

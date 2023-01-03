@@ -5,7 +5,8 @@ namespace FinacialTrackerApplication.Interfaces
 {
     public interface IUserRepository
     {
-        ICollection<User> GetUsers();
+        ICollection<User> GetAllUsers();
+        ICollection<User> GetUserByEmail(UserLoginModel user);
         public bool AddUser(UserRegisterModel user);
 
     }
