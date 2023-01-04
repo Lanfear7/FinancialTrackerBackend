@@ -4,6 +4,7 @@ using FinacialTrackerApplication.Models;
 using FinacialTrackerApplication.Repositories;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinacialTrackerApplication.Controllers
@@ -21,7 +22,7 @@ namespace FinacialTrackerApplication.Controllers
             _IAuthRepository = AuthRepository;
         }
         
-        [HttpGet]
+        [HttpGet,Authorize]
         [Route("getUsers")]
         public IEnumerable<User> GetUsers()
         {
