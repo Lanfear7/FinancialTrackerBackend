@@ -13,8 +13,6 @@ namespace FinacialTrackerApplication.Repositories
         private readonly DataContext _context;
         private readonly IAuthRepository _IAuthRepository;
 
-        public static User user = new User();
-
         public UserRepository(DataContext context, IAuthRepository IAuthRepository)
         {
             _context = context;
@@ -27,6 +25,15 @@ namespace FinacialTrackerApplication.Repositories
             return _context.Users.OrderBy(u => u.Id).ToList();
         }
 
+        public ICollection<User> GetUserByEmail(UserRegisterModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if (user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
+        }
         public ICollection<User> GetUserByEmail(UserLoginModel request)
         {
             var user = _context.Users.Where(u => u.Email == request.Email).ToList();
@@ -39,6 +46,7 @@ namespace FinacialTrackerApplication.Repositories
 
         public bool AddUser(UserRegisterModel request)
         {
+            User user = new User();
             _IAuthRepository.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.User_Name = request.Username;

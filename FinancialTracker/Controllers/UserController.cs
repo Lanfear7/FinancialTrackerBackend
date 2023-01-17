@@ -33,12 +33,14 @@ namespace FinacialTrackerApplication.Controllers
         [Route("Register")]
         public IActionResult RegisterUsers(UserRegisterModel request)
         {
-            var user = _IUserRepository.AddUser(request);
-            if (!user)
+            var addUser = _IUserRepository.AddUser(request);
+            if (!addUser)
             {
                 return BadRequest("Unable to create user");
             }
-            return Ok("User was created");
+            var user = _IUserRepository.GetUserByEmail(request);
+            var token = _IAuthRepository.CreateJWT(user.ToArray()[0]);
+            return Ok(token);
         }
 
         [HttpPost]
