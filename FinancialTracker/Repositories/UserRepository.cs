@@ -5,6 +5,8 @@ using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Web.Http;
 
 namespace FinacialTrackerApplication.Repositories
 {
@@ -25,6 +27,8 @@ namespace FinacialTrackerApplication.Repositories
             return _context.Users.OrderBy(u => u.Id).ToList();
         }
 
+        //Method OverLoads************************
+
         public ICollection<User> GetUserByEmail(UserRegisterModel request)
         {
             var user = _context.Users.Where(u => u.Email == request.Email).ToList();
@@ -43,6 +47,8 @@ namespace FinacialTrackerApplication.Repositories
             }
             return user;
         }
+
+        //*****************************************
 
         public bool AddUser(UserRegisterModel request)
         {

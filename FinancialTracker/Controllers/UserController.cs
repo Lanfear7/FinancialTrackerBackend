@@ -33,6 +33,11 @@ namespace FinacialTrackerApplication.Controllers
         [Route("Register")]
         public IActionResult RegisterUsers(UserRegisterModel request)
         {
+            var checkRequestEmail = _IUserRepository.GetUserByEmail(request);
+            if(checkRequestEmail != null)
+            {
+                return BadRequest("Email already reqistered");
+            }
             var addUser = _IUserRepository.AddUser(request);
             if (!addUser)
             {
