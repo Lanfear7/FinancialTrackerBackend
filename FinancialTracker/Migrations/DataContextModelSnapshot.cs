@@ -101,6 +101,9 @@ namespace FinancialTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float>("MonthlyIncome")
+                        .HasColumnType("real");
+
                     b.Property<byte[]>("Password")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
