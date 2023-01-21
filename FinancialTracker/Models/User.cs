@@ -7,6 +7,7 @@ namespace FinacialTrackerApplication.Models
         public int Id { get; set; }
         public string User_Name { get; set; }
         public string Email { get; set; }
+        public float MonthlyIncome { get; set; }
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
         public ICollection<Transaction> Transactions { get; set; }

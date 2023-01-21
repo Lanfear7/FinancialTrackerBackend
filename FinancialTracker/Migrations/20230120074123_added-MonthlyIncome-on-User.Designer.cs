@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230103104614_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20230120074123_added-MonthlyIncome-on-User")]
+    partial class addedMonthlyIncomeonUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,7 +102,10 @@ namespace FinancialTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("MonthlyIncome")
+                        .HasColumnType("real");
 
                     b.Property<byte[]>("Password")
                         .IsRequired()
@@ -117,9 +120,6 @@ namespace FinancialTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

@@ -99,7 +99,10 @@ namespace FinancialTracker.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("MonthlyIncome")
+                        .HasColumnType("real");
 
                     b.Property<byte[]>("Password")
                         .IsRequired()
@@ -114,9 +117,6 @@ namespace FinancialTracker.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });

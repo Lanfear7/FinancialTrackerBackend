@@ -4,7 +4,10 @@ using FinacialTrackerApplication.Models;
 using FinacialTrackerApplication.Repositories;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace FinacialTrackerApplication.Controllers
 {
@@ -21,7 +24,7 @@ namespace FinacialTrackerApplication.Controllers
             _IAuthRepository = AuthRepository;
         }
         
-        [HttpGet]
+        [HttpGet,Authorize]
         [Route("getUsers")]
         public IEnumerable<User> GetUsers()
         {
@@ -32,12 +35,19 @@ namespace FinacialTrackerApplication.Controllers
         [Route("Register")]
         public IActionResult RegisterUsers(UserRegisterModel request)
         {
-            var user = _IUserRepository.AddUser(request);
-            if (!user)
+            var checkRequestEmail = _IUserRepository.GetUserByEmail(request);
+            if(checkRequestEmail != null)
+            {
+                return BadRequest("Email already reqistered");
+            }
+            var addUser = _IUserRepository.AddUser(request);
+            if (!addUser)
             {
                 return BadRequest("Unable to create user");
             }
-            return Ok("User was created");
+            var user = _IUserRepository.GetUserByEmail(request);
+            var token = _IAuthRepository.CreateJWT(user.ToArray()[0]);
+            return Ok(token);
         }
 
         [HttpPost]
