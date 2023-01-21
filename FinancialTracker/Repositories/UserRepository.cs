@@ -1,12 +1,9 @@
-﻿using Azure.Core;
-using FinacialTrackerApplication.Data;
+﻿using FinacialTrackerApplication.Data;
 using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Web.Http;
+
 
 namespace FinacialTrackerApplication.Repositories
 {
@@ -70,6 +67,28 @@ namespace FinacialTrackerApplication.Repositories
             {
                 throw;
             } 
+        }
+
+        public ICollection<User> GetUserById(int userId)
+        {
+            var user = _context.Users.Where(user => user.Id == userId).ToList();
+            if (user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
+        }
+
+        public IEnumerable<User> UpdateMonthlyIncome(int userId, float income)
+        {
+            var userIncome = _context.Users.Where(user => user.Id == userId).FirstOrDefault();
+            if (userIncome == null)
+            {
+                return null;
+            }
+            userIncome.MonthlyIncome = income;
+            _context.SaveChanges();
+            return _context.Users.Where(user => user.Id == userId).ToList();
         }
 
 

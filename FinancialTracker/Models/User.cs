@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinancialTracker.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinacialTrackerApplication.Models
 {
@@ -13,7 +14,7 @@ namespace FinacialTrackerApplication.Models
         public ICollection<Transaction> Transactions { get; set; }
         public ICollection<Tracker> Trackers { get; set; }
         public ICollection<Budget> Budgets { get; set; }
-
+        public ICollection<Expenses> Expenses { get; set; }
 
     }
 }

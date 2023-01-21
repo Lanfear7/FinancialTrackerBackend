@@ -1,7 +1,5 @@
-﻿using FinacialTrackerApplication.Data;
-using FinacialTrackerApplication.Models;
+﻿using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
-using FinancialTracker.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -40,7 +38,8 @@ namespace FinancialTracker.Repositories
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.User_Name)
+                new Claim(ClaimTypes.Name, user.User_Name),
+                new Claim(ClaimTypes.Role, user.Id.ToString()),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("Keys:JwtToken").Value));

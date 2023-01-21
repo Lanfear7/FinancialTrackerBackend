@@ -46,6 +46,31 @@ namespace FinancialTracker.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Expenses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ExpenseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
                 {
                     b.Property<int>("Id")
@@ -132,6 +157,17 @@ namespace FinancialTracker.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Expenses", b =>
+                {
+                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
+                        .WithMany("Expenses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
                 {
                     b.HasOne("FinacialTrackerApplication.Models.User", "User")
@@ -157,6 +193,8 @@ namespace FinancialTracker.Migrations
             modelBuilder.Entity("FinacialTrackerApplication.Models.User", b =>
                 {
                     b.Navigation("Budgets");
+
+                    b.Navigation("Expenses");
 
                     b.Navigation("Trackers");
 
