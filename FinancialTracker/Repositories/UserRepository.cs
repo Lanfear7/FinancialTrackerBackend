@@ -3,6 +3,8 @@ using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;  
 
 
 namespace FinacialTrackerApplication.Repositories
@@ -38,7 +40,7 @@ namespace FinacialTrackerApplication.Repositories
         public ICollection<User> GetUserByEmail(UserLoginModel request)
         {
             var user = _context.Users.Where(u => u.Email == request.Email).ToList();
-            if(user.Count == 0)
+            if (user.Count == 0)
             {
                 return user = null;
             }
@@ -66,17 +68,25 @@ namespace FinacialTrackerApplication.Repositories
             catch (Exception error)
             {
                 throw;
-            } 
+            }
         }
 
-        public ICollection<User> GetUserById(int userId)
+        public IEnumerable<UserTableJoin> GetUserById(int userId)
         {
             var user = _context.Users.Where(user => user.Id == userId).ToList();
-            if (user.Count == 0)
+            var entryPoint = (from u in _context.Users
+                              join t in _context.Trackers on u.Id equals t.User.Id
+                              where t.Id == u.Id
+                              select new UserTableJoin
+                              {
+                                  User = u,
+                                  Tracker = t,
+                              }).ToList();
+            /*if (entryPoint)
             {
-                return user = null;
-            }
-            return user;
+                return  null;
+            }*/ 
+            return entryPoint;
         }
 
         public IEnumerable<User> UpdateMonthlyIncome(int userId, float income)

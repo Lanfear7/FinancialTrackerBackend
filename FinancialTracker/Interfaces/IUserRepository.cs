@@ -9,7 +9,7 @@ namespace FinacialTrackerApplication.Interfaces
         public ICollection<User> GetUserByEmail(UserLoginModel user);
         public ICollection<User> GetUserByEmail(UserRegisterModel request);
         public bool AddUser(UserRegisterModel user);
-        public ICollection<User> GetUserById(int userId);
+        public IEnumerable<UserTableJoin> GetUserById(int userId);
         public IEnumerable<User> UpdateMonthlyIncome(int userId, float income);
 
 
