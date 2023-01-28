@@ -76,7 +76,7 @@ namespace FinacialTrackerApplication.Repositories
             var user = _context.Users.Where(user => user.Id == userId).ToList();
             var entryPoint = (from u in _context.Users
                               join t in _context.Trackers on u.Id equals t.User.Id
-                              where t.Id == u.Id
+                              where t.User.Id == userId
                               select new UserTableJoin
                               {
                                   User = u,
