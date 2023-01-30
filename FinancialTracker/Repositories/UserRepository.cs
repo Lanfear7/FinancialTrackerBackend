@@ -21,34 +21,6 @@ namespace FinacialTrackerApplication.Repositories
 
         }
 
-        public ICollection<User> GetAllUsers()
-        {
-            return _context.Users.OrderBy(u => u.Id).ToList();
-        }
-
-        //Method OverLoads************************
-
-        public ICollection<User> GetUserByEmail(UserRegisterModel request)
-        {
-            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
-            if (user.Count == 0)
-            {
-                return user = null;
-            }
-            return user;
-        }
-        public ICollection<User> GetUserByEmail(UserLoginModel request)
-        {
-            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
-            if (user.Count == 0)
-            {
-                return user = null;
-            }
-            return user;
-        }
-
-        //*****************************************
-
         public bool AddUser(UserRegisterModel request)
         {
             User user = new User();
@@ -71,36 +43,73 @@ namespace FinacialTrackerApplication.Repositories
             }
         }
 
-        public IEnumerable<UserTableJoin> GetUserById(int userId)
+        public ICollection<User> GetAllUsers()
         {
-            var user = _context.Users.Where(user => user.Id == userId).ToList();
-            var entryPoint = (from u in _context.Users
-                              join t in _context.Trackers on u.Id equals t.User.Id
-                              where t.User.Id == userId
-                              select new UserTableJoin
-                              {
-                                  User = u,
-                                  Tracker = t,
-                              }).ToList();
-            /*if (entryPoint)
+            return _context.Users.OrderBy(u => u.Id).ToList();
+        }
+
+        //************************Method OverLoads***********************
+
+        public ICollection<User> GetUserByEmail(UserRegisterModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if (user.Count == 0)
             {
-                return  null;
-            }*/ 
-            return entryPoint;
+                return user = null;
+            }
+            return user;
+        }
+        public ICollection<User> GetUserByEmail(UserLoginModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if (user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
+        }
+
+        //****************************************************************
+
+        public IEnumerable<User> GetUserById(int userId)
+        {
+            var userData = _context.Users.Where(u => u.Id == userId).ToList();
+            if (userData.Count == 0)
+            {
+                return null;
+            }
+            return userData;
         }
 
         public IEnumerable<User> UpdateMonthlyIncome(int userId, float income)
         {
-            var userIncome = _context.Users.Where(user => user.Id == userId).FirstOrDefault();
-            if (userIncome == null)
+            var user = _context.Users.Where(user => user.Id == userId).FirstOrDefault();
+            if (user == null)
             {
                 return null;
             }
-            userIncome.MonthlyIncome = income;
+            user.MonthlyIncome = income;
             _context.SaveChanges();
             return _context.Users.Where(user => user.Id == userId).ToList();
         }
 
+        public IEnumerable<TrackerTransactionsModel> GetUsersTrackers(int userId)
+        {
+            var trackerTransactions = (from tracker in _context.Trackers where tracker.User.Id == userId
+                                       join transaction in _context.Transactions
+                                       on tracker.User.Id equals transaction.User.Id
+                                       select new TrackerTransactionsModel
+                                       {
+                                           Tracker = tracker,
+                                           Transaction = transaction
+                                       }).ToList();
 
+            if(trackerTransactions.Count == 0)
+            {
+                return null;
+            }
+            return trackerTransactions;
+        }
+        
     }
 }

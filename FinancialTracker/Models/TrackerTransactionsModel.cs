@@ -2,9 +2,9 @@
 
 namespace FinancialTracker.Models
 {
-    public class UserTableJoin
+    public class TrackerTransactionsModel
     {
-        public User User { get; set; }
         public Tracker Tracker { get; set; }
+        public Transaction Transaction { get; set; }
     }
 }

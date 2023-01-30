@@ -27,15 +27,31 @@ namespace FinancialTracker.Controllers
             }
             return Ok(user);
         }
-
+        
         [HttpPost, Authorize]
         [Route("CurrentUser/UpdateIncome/{Id:int}")]
         public IActionResult UpdateMonthlyIncome(int Id, IncomeDTO request )
-        {
+        {            
             var user = _IUserRepository.UpdateMonthlyIncome(Id, request.Income);
             if(user == null)
             {
                 BadRequest("Coult not update income");
+            }
+            return Ok(user);
+        }
+
+
+        //********** TRACKERS **********
+
+
+        [HttpGet, Authorize]
+        [Route("CurrentUser/Trackers/{Id:int}")]
+        public IActionResult CurrentUserTrackers(int Id)
+        {
+            var user = _IUserRepository.GetUsersTrackers(Id);
+            if (user == null)
+            {
+                return BadRequest("Error User Not Found");
             }
             return Ok(user);
         }
