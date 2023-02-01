@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class ExpensesAdded : Migration
+    public partial class cascadeFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,15 +97,16 @@ namespace FinancialTracker.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrackerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Transactions_Trackers_TrackerId",
+                        column: x => x.TrackerId,
+                        principalTable: "Trackers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -126,9 +127,9 @@ namespace FinancialTracker.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_UserId",
+                name: "IX_Transactions_TrackerId",
                 table: "Transactions",
-                column: "UserId");
+                column: "TrackerId");
         }
 
         /// <inheritdoc />
@@ -141,10 +142,10 @@ namespace FinancialTracker.Migrations
                 name: "Expenses");
 
             migrationBuilder.DropTable(
-                name: "Trackers");
+                name: "Transactions");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "Trackers");
 
             migrationBuilder.DropTable(
                 name: "Users");

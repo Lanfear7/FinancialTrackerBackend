@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230121064553_ExpensesAdded")]
-    partial class ExpensesAdded
+    [Migration("20230201032804_cascadeFix")]
+    partial class cascadeFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,12 +107,15 @@ namespace FinancialTracker.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TrackerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TrackerId");
 
                     b.ToTable("Transactions");
                 });
@@ -184,13 +187,18 @@ namespace FinancialTracker.Migrations
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.Transaction", b =>
                 {
-                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
+                    b.HasOne("FinacialTrackerApplication.Models.Tracker", "Tracker")
                         .WithMany("Transactions")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Tracker");
+                });
+
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.User", b =>
@@ -200,8 +208,6 @@ namespace FinancialTracker.Migrations
                     b.Navigation("Expenses");
 
                     b.Navigation("Trackers");
-
-                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

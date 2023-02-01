@@ -43,10 +43,10 @@ namespace FinancialTracker.Controllers
 
         //********** TRACKERS **********
 
-
+        
         [HttpGet, Authorize]
         [Route("CurrentUser/Trackers/{Id:int}")]
-        public IActionResult CurrentUserTrackers(int Id)
+         public IActionResult CurrentUserTrackers(int Id)
         {
             var user = _IUserRepository.GetUsersTrackers(Id);
             if (user == null)
