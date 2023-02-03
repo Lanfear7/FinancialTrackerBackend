@@ -11,8 +11,5 @@ namespace FinacialTrackerApplication.Interfaces
         public bool AddUser(UserRegisterModel user);
         public IEnumerable<User> GetUserById(int userId);
         public IEnumerable<User> UpdateMonthlyIncome(int userId, float income);
-        public IEnumerable<TrackerTransactionsModel> GetUsersTrackers(int userId);
-
-
     }
 }

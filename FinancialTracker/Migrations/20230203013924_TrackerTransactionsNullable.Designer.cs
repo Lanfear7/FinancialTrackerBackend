@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230201032804_cascadeFix")]
-    partial class cascadeFix
+    [Migration("20230203013924_TrackerTransactionsNullable")]
+    partial class TrackerTransactionsNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

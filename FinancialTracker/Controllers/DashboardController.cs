@@ -1,4 +1,5 @@
 ﻿using FinacialTrackerApplication.Interfaces;
+using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace FinancialTracker.Controllers
     public class DashboardController : Controller
     {
         private readonly IUserRepository _IUserRepository;
+        private readonly ITrackerRepository _ITrackerRepository;
 
-        public DashboardController(IUserRepository iUserRepository)
+        public DashboardController(IUserRepository iUserRepository, ITrackerRepository iTrackerRepository)
         {
             _IUserRepository = iUserRepository;
+            _ITrackerRepository = iTrackerRepository;
         }
 
         [HttpGet, Authorize]
@@ -37,7 +40,7 @@ namespace FinancialTracker.Controllers
             {
                 BadRequest("Coult not update income");
             }
-            return Ok(user);
+            return Ok("Income Updated");
         }
 
 
@@ -48,12 +51,30 @@ namespace FinancialTracker.Controllers
         [Route("CurrentUser/Trackers/{Id:int}")]
          public IActionResult CurrentUserTrackers(int Id)
         {
-            var user = _IUserRepository.GetUsersTrackers(Id);
+            var user = _ITrackerRepository.GetUsersTrackers(Id);
             if (user == null)
             {
-                return BadRequest("Error User Not Found");
+                return BadRequest("No Trackers Found");
             }
             return Ok(user);
+        }
+
+        [HttpPost, Authorize]
+        [Route("CurrentUser/Trackers/Add/{Id:int}")]
+        public IActionResult AddUserTracker(NewTrackerDTO request, int Id)
+        {
+            if(request.Name == "")
+            {
+                return BadRequest("Track Must Have a Name");
+            }
+            //add tracker to db must have tracker id returned
+
+            if (request.Transactions.Count > 0)
+            {
+                //add to db with returned tracker id
+            }
+            //
+            return Ok();
         }
 
     }

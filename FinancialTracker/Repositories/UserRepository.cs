@@ -91,26 +91,6 @@ namespace FinacialTrackerApplication.Repositories
             user.MonthlyIncome = income;
             _context.SaveChanges();
             return _context.Users.Where(user => user.Id == userId).ToList();
-        }
-
-       public IEnumerable<TrackerTransactionsModel> GetUsersTrackers(int userId)
-        {
-            var trackerTransactions = (from tracker in _context.Trackers where tracker.User.Id == userId
-                                       join transaction in _context.Transactions
-                                       on tracker.Id equals transaction.Tracker.Id into tt
-                                       from subTransaction in tt.DefaultIfEmpty()
-                                       select new TrackerTransactionsModel
-                                       { 
-                                           Tracker = tracker,
-                                           Transaction = subTransaction 
-                                       }).ToList();
-
-            if (trackerTransactions.Count == 0)
-            {
-                return null;
-            }
-            return trackerTransactions;
-        } 
-        
+        }        
     }
 }
