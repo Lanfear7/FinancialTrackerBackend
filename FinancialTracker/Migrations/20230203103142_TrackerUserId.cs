@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class TrackerTransactionsNullable : Migration
+    public partial class TrackerUserId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

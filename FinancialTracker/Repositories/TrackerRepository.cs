@@ -38,6 +38,26 @@ namespace FinancialTracker.Repositories
             return trackerTransactions;
         }
 
+        public int AddTracker(string Name, int Id)
+        {
+            var addTracker = new Tracker
+            {
+                Name = Name,
+                UserId = Id
+            };
+            try
+            {
+                _context.Trackers.Add(addTracker);
+                _context.SaveChanges();
+                var TrackerId = addTracker.Id;
+                return TrackerId;
+            }
+            catch (Exception error)
+            {
+
+            }
+            return 0;
+        }
 
     }
 }
