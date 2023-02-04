@@ -2,7 +2,7 @@
 {
     public class TransactionDTO
     {
-        public int Amount { get; set; }
+        public float Amount { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

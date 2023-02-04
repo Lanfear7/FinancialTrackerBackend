@@ -3,6 +3,7 @@ using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using FinancialTracker.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -57,6 +58,29 @@ namespace FinancialTracker.Repositories
 
             }
             return 0;
+        }
+
+        public bool AddTransactions(ICollection<TransactionDTO> request, int Id)
+        {
+            foreach(var userTransaction in request)
+            {
+                var transaction = new Transaction
+                {
+                    Amount = userTransaction.Amount,
+                    DateTime = userTransaction.DateTime,
+                    TrackerId = Id
+                };
+                try
+                {
+                    _context.Transactions.Add(transaction);
+                    _context.SaveChanges();
+                }
+                catch(Exception error)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
     }

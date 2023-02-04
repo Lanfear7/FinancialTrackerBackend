@@ -70,15 +70,24 @@ namespace FinancialTracker.Controllers
             //add tracker to db must have tracker id returned
             var trackerName = request.Name;
             var addedTrackerId = _ITrackerRepository.AddTracker(trackerName, Id);
-
+            if(addedTrackerId == 0)
+            {
+                return BadRequest("Tracker Was Not Added");
+            }
 
             if (request.Transactions != null)
             {
                 //add to db with returned tracker id
-                return Ok(addedTrackerId);
+                var transactions = request.Transactions;
+                var addedTransaction = _ITrackerRepository.AddTransactions(transactions, addedTrackerId);
+                if (!addedTransaction)
+                {
+                    return BadRequest("Transaction's Were Not Added");
+                }
+                return Ok("Tracker Id:" + addedTrackerId + " Has Transactions");
             }
             //
-            return Ok("No Transaction on Tracker ID:"+addedTrackerId);
+            return Ok("Tracker Added");
         }
 
     }
