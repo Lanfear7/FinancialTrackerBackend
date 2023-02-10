@@ -83,5 +83,21 @@ namespace FinancialTracker.Repositories
             return true;
         }
 
+        public bool DeleteTracker(int Id)
+        {
+            var remove = (from tracker in _context.Trackers
+                          where tracker.Id == Id
+                          select tracker).FirstOrDefault();
+            try
+            {
+                _context.Trackers.Remove(remove);
+                _context.SaveChanges();
+            }catch(Exception error)
+            {
+                return false;
+            }
+            return true;
+        }
+
     }
 }

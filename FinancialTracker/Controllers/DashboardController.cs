@@ -89,6 +89,17 @@ namespace FinancialTracker.Controllers
             //
             return Ok("Tracker Added");
         }
+        [HttpDelete, Authorize]
+        [Route("CurrentUser/Trackers/Delete/{Id:int}")]
+        public IActionResult DeleteTracker(int Id)
+        {
+            var removeTracker = _ITrackerRepository.DeleteTracker(Id);
+            if(removeTracker != true)
+            {
+                return BadRequest("Could not remove tracker");
+            }
+            return Ok();
+        }
 
     }
 }
