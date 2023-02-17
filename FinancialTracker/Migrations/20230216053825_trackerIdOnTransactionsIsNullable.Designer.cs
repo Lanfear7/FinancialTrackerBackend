@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230204032146_TransactionsAmountChangeIntoToFloat")]
-    partial class TransactionsAmountChangeIntoToFloat
+    [Migration("20230216053825_trackerIdOnTransactionsIsNullable")]
+    partial class trackerIdOnTransactionsIsNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,7 +110,7 @@ namespace FinancialTracker.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TrackerId")
+                    b.Property<int?>("TrackerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -189,9 +189,7 @@ namespace FinancialTracker.Migrations
                 {
                     b.HasOne("FinacialTrackerApplication.Models.Tracker", "Tracker")
                         .WithMany("Transactions")
-                        .HasForeignKey("TrackerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrackerId");
 
                     b.Navigation("Tracker");
                 });

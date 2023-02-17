@@ -9,6 +9,7 @@ namespace FinancialTracker.Interfaces
         public IEnumerable<TrackerTransactionsModel> GetUsersTrackers(int userId);
         public int AddTracker(string Name, int Id);
         public bool AddTransactions(ICollection<TransactionDTO> request, int Id);
+        public bool AddTransactions(TransactionDTO request);
         public bool DeleteTracker(int Id);
     }
 }

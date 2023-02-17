@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class TransactionsAmountChangeIntoToFloat : Migration
+    public partial class trackerIdOnTransactionsIsNullable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,7 +97,7 @@ namespace FinancialTracker.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<float>(type: "real", nullable: false),
-                    TrackerId = table.Column<int>(type: "int", nullable: false),
+                    TrackerId = table.Column<int>(type: "int", nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -107,8 +107,7 @@ namespace FinancialTracker.Migrations
                         name: "FK_Transactions_Trackers_TrackerId",
                         column: x => x.TrackerId,
                         principalTable: "Trackers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(

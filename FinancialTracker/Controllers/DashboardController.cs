@@ -1,6 +1,7 @@
 ﻿using FinacialTrackerApplication.Interfaces;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
+using FinancialTracker.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -97,6 +98,19 @@ namespace FinancialTracker.Controllers
             if(removeTracker != true)
             {
                 return BadRequest("Could not remove tracker");
+            }
+            return Ok();
+        }
+
+
+        [HttpPost, Authorize]
+        [Route("CurrentUser/Transactions/Add")]
+        public IActionResult AddTransaction(TransactionDTO request)
+        {
+            var addTransaction = _ITrackerRepository.AddTransactions(request);
+            if(addTransaction != true)
+            {
+                return BadRequest("Couldnt add transaction");
             }
             return Ok();
         }

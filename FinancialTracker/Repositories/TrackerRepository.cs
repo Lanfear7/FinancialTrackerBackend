@@ -60,6 +60,7 @@ namespace FinancialTracker.Repositories
             return 0;
         }
 
+        //************************Method OverLoads***********************
         public bool AddTransactions(ICollection<TransactionDTO> request, int Id)
         {
             foreach(var userTransaction in request)
@@ -82,6 +83,28 @@ namespace FinancialTracker.Repositories
             }
             return true;
         }
+
+        public bool AddTransactions(TransactionDTO request)
+        {
+                var transaction = new Transaction
+                {
+                    TrackerId = request.TrackerId,
+                    Amount = request.Amount,
+                    DateTime = request.DateTime, 
+                };
+                try
+                {
+                    _context.Transactions.Add(transaction);
+                    _context.SaveChanges();
+                }
+                catch (Exception error)
+                {
+                    return false;
+                }
+            return true;
+        }
+
+        //*******************************************************
 
         public bool DeleteTracker(int Id)
         {
