@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230216053825_trackerIdOnTransactionsIsNullable")]
-    partial class trackerIdOnTransactionsIsNullable
+    [Migration("20230228051618_editsToExpenses")]
+    partial class editsToExpenses
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,14 @@ namespace FinancialTracker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ExpenseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -110,7 +117,7 @@ namespace FinancialTracker.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TrackerId")
+                    b.Property<int>("TrackerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -189,7 +196,9 @@ namespace FinancialTracker.Migrations
                 {
                     b.HasOne("FinacialTrackerApplication.Models.Tracker", "Tracker")
                         .WithMany("Transactions")
-                        .HasForeignKey("TrackerId");
+                        .HasForeignKey("TrackerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tracker");
                 });

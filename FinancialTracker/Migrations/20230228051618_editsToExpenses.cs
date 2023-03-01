@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class trackerIdOnTransactionsIsNullable : Migration
+    public partial class editsToExpenses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,6 +57,8 @@ namespace FinancialTracker.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExpenseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Value = table.Column<float>(type: "real", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -97,7 +99,7 @@ namespace FinancialTracker.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Amount = table.Column<float>(type: "real", nullable: false),
-                    TrackerId = table.Column<int>(type: "int", nullable: true),
+                    TrackerId = table.Column<int>(type: "int", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -107,7 +109,8 @@ namespace FinancialTracker.Migrations
                         name: "FK_Transactions_Trackers_TrackerId",
                         column: x => x.TrackerId,
                         principalTable: "Trackers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,5 +1,4 @@
 ﻿using FinancialTracker.Models;
-using FinacialTrackerApplication.Models;
 using FinancialTracker.Models.DTO;
 
 namespace FinancialTracker.Interfaces

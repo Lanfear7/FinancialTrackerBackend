@@ -2,9 +2,7 @@
 using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
-using FinancialTracker.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;  
+using FinancialTracker.Models; 
 
 
 namespace FinacialTrackerApplication.Repositories

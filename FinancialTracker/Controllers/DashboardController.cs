@@ -2,6 +2,7 @@
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using FinancialTracker.Models.DTO;
+using FinancialTracker.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +14,17 @@ namespace FinancialTracker.Controllers
     {
         private readonly IUserRepository _IUserRepository;
         private readonly ITrackerRepository _ITrackerRepository;
+        private readonly IExpensesRepository _IExpensesRepository;
 
-        public DashboardController(IUserRepository iUserRepository, ITrackerRepository iTrackerRepository)
+
+        public DashboardController(
+            IUserRepository iUserRepository, 
+            ITrackerRepository iTrackerRepository,
+            IExpensesRepository iExpensesRepository)
         {
             _IUserRepository = iUserRepository;
             _ITrackerRepository = iTrackerRepository;
+            _IExpensesRepository = iExpensesRepository;
         }
 
         [HttpGet, Authorize]
@@ -111,6 +118,18 @@ namespace FinancialTracker.Controllers
             if(addTransaction != true)
             {
                 return BadRequest("Couldnt add transaction");
+            }
+            return Ok();
+        }
+
+        [HttpPost, Authorize]
+        [Route("CurrentUser/Expenses/Add")]
+        public IActionResult AddExpenses(ExpensesDTO request)
+        {
+            var addExpense = _IExpensesRepository.AddExpenses(request);
+            if(addExpense != true)
+            {
+                return BadRequest("Could not add expenses");
             }
             return Ok();
         }
