@@ -14,6 +14,7 @@ namespace FinacialTrackerApplication.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Tracker> Trackers { get; set; }
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Expenses> Expenses { get; set; }
 
     }
 }

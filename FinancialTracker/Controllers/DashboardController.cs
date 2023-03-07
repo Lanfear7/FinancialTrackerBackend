@@ -134,5 +134,26 @@ namespace FinancialTracker.Controllers
             return Ok();
         }
 
+        //GET & DELETE methods for Expenses
+
+        [HttpGet, Authorize]
+        [Route("CurrentUser/Expenses/GetAll/{Id:int}")]
+        public IActionResult GetAllExpenses(int Id)
+        {
+            var currentExpenses = _IExpensesRepository.GetAllExpenses(Id);
+            if(currentExpenses == null)
+            {
+                return BadRequest("No expenses found");
+            }
+            return Ok(currentExpenses);
+        }
+
+        [HttpDelete, Authorize]
+        [Route("CurrentUser/Expenses/GetAll/{ExpenseId:int}")]
+        public IActionResult DelteExpense()
+        {
+            return Ok();
+        }
+
     }
 }

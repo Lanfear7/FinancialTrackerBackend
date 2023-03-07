@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinancialTracker.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230228051618_editsToExpenses")]
-    partial class editsToExpenses
+    [Migration("20230307063105_typeRemovedFromExpenses")]
+    partial class typeRemovedFromExpenses
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,10 +61,6 @@ namespace FinancialTracker.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ExpenseName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

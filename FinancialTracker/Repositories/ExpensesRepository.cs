@@ -15,12 +15,21 @@ namespace FinancialTracker.Repositories
             _context = context;
         }
 
+        public IEnumerable<Expenses> GetAllExpenses(int Id)
+        {
+            var expenses = _context.Expenses.Where(e => e.UserId == Id).ToList();
+            if(expenses.Count == 0)
+            {
+                return null;
+            }
+            return expenses;
+        }
+
         public bool AddExpenses(ExpensesDTO request)
         {
             var expense = new Expenses();
             expense.ExpenseName = request.ExpenseName;
             expense.Value = request.Value;
-            expense.Type = request.Type;
             expense.DateTime = request.DateTime;
             expense.UserId = request.UserId;
             try
