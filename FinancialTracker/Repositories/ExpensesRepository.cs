@@ -2,6 +2,7 @@
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models.DTO;
+using System.Net.WebSockets;
 
 namespace FinancialTracker.Repositories
 {
@@ -42,7 +43,22 @@ namespace FinancialTracker.Repositories
             {
                 return false;
             }
-            
+        }
+        public bool DeleteExpenses(int id)
+        {
+            var remove = (from expense in _context.Expenses
+                          where expense.Id == id
+                          select expense).FirstOrDefault();
+            try
+            {
+                _context.Expenses.Remove(remove);
+                _context.SaveChanges();
+                return true;
+            }
+            catch(Exception error)
+            {
+                return false;
+            }
         }
 
     }

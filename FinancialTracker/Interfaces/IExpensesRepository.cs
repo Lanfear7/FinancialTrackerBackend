@@ -8,5 +8,6 @@ namespace FinancialTracker.Interfaces
     {
         public bool AddExpenses(ExpensesDTO request);
         public IEnumerable<Expenses> GetAllExpenses(int Id);
+        public bool DeleteExpenses(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FinacialTrackerApplication.Interfaces;
+using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using FinancialTracker.Models.DTO;
@@ -149,9 +150,14 @@ namespace FinancialTracker.Controllers
         }
 
         [HttpDelete, Authorize]
-        [Route("CurrentUser/Expenses/GetAll/{ExpenseId:int}")]
-        public IActionResult DelteExpense()
+        [Route("CurrentUser/Expenses/Delete/{ExpenseId:int}")]
+        public IActionResult DelteExpense(int ExpenseId)
         {
+            var expenseDeleted = _IExpensesRepository.DeleteExpenses(ExpenseId);
+            if (!expenseDeleted)
+            {
+                return BadRequest("Could not delete expense");
+            }
             return Ok();
         }
 
