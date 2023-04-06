@@ -21,7 +21,8 @@ namespace FinancialTracker.Controllers
         public DashboardController(
             IUserRepository iUserRepository, 
             ITrackerRepository iTrackerRepository,
-            IExpensesRepository iExpensesRepository)
+            IExpensesRepository iExpensesRepository
+            )
         {
             _IUserRepository = iUserRepository;
             _ITrackerRepository = iTrackerRepository;
