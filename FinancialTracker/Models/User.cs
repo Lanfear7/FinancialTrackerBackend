@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinancialTracker.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinacialTrackerApplication.Models
 {
@@ -10,10 +11,9 @@ namespace FinacialTrackerApplication.Models
         public float MonthlyIncome { get; set; }
         public byte[] Password { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public ICollection<Transaction> Transactions { get; set; }
         public ICollection<Tracker> Trackers { get; set; }
         public ICollection<Budget> Budgets { get; set; }
-
+        public ICollection<Expenses> Expenses { get; set; }
 
     }
 }

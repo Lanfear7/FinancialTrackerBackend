@@ -1,12 +1,9 @@
-﻿using Azure.Core;
-using FinacialTrackerApplication.Data;
+﻿using FinacialTrackerApplication.Data;
 using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
 using FinancialTracker.Interfaces;
-using FinancialTracker.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Web.Http;
+using FinancialTracker.Models; 
+
 
 namespace FinacialTrackerApplication.Repositories
 {
@@ -21,34 +18,6 @@ namespace FinacialTrackerApplication.Repositories
             _IAuthRepository = IAuthRepository;
 
         }
-
-        public ICollection<User> GetAllUsers()
-        {
-            return _context.Users.OrderBy(u => u.Id).ToList();
-        }
-
-        //Method OverLoads************************
-
-        public ICollection<User> GetUserByEmail(UserRegisterModel request)
-        {
-            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
-            if (user.Count == 0)
-            {
-                return user = null;
-            }
-            return user;
-        }
-        public ICollection<User> GetUserByEmail(UserLoginModel request)
-        {
-            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
-            if(user.Count == 0)
-            {
-                return user = null;
-            }
-            return user;
-        }
-
-        //*****************************************
 
         public bool AddUser(UserRegisterModel request)
         {
@@ -69,9 +38,57 @@ namespace FinacialTrackerApplication.Repositories
             catch (Exception error)
             {
                 throw;
-            } 
+            }
         }
 
+        public ICollection<User> GetAllUsers()
+        {
+            return _context.Users.OrderBy(u => u.Id).ToList();
+        }
 
+        //************************Method OverLoads***********************
+
+        public ICollection<User> GetUserByEmail(UserRegisterModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if (user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
+        }
+        public ICollection<User> GetUserByEmail(UserLoginModel request)
+        {
+            var user = _context.Users.Where(u => u.Email == request.Email).ToList();
+            if (user.Count == 0)
+            {
+                return user = null;
+            }
+            return user;
+        }
+
+        //****************************************************************
+
+        public IEnumerable<User> GetUserById(int userId)
+        {
+            var userData = _context.Users.Where(u => u.Id == userId).ToList();
+            if (userData.Count == 0)
+            {
+                return null;
+            }
+            return userData;
+        }
+
+        public IEnumerable<User> UpdateMonthlyIncome(int userId, float income)
+        {
+            var user = _context.Users.Where(user => user.Id == userId).FirstOrDefault();
+            if (user == null)
+            {
+                return null;
+            }
+            user.MonthlyIncome = income;
+            _context.SaveChanges();
+            return _context.Users.Where(user => user.Id == userId).ToList();
+        }        
     }
 }

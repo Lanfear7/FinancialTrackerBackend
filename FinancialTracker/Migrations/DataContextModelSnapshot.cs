@@ -46,6 +46,34 @@ namespace FinancialTracker.Migrations
                     b.ToTable("Budgets");
                 });
 
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Expenses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExpenseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Expenses");
+                });
+
             modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
                 {
                     b.Property<int>("Id")
@@ -76,15 +104,18 @@ namespace FinancialTracker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
 
-                    b.Property<int>("UserId")
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TrackerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TrackerId");
 
                     b.ToTable("Transactions");
                 });
@@ -132,6 +163,17 @@ namespace FinancialTracker.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Expenses", b =>
+                {
+                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
+                        .WithMany("Expenses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
                 {
                     b.HasOne("FinacialTrackerApplication.Models.User", "User")
@@ -145,22 +187,27 @@ namespace FinancialTracker.Migrations
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.Transaction", b =>
                 {
-                    b.HasOne("FinacialTrackerApplication.Models.User", "User")
+                    b.HasOne("FinacialTrackerApplication.Models.Tracker", "Tracker")
                         .WithMany("Transactions")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Tracker");
+                });
+
+            modelBuilder.Entity("FinacialTrackerApplication.Models.Tracker", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("FinacialTrackerApplication.Models.User", b =>
                 {
                     b.Navigation("Budgets");
 
-                    b.Navigation("Trackers");
+                    b.Navigation("Expenses");
 
-                    b.Navigation("Transactions");
+                    b.Navigation("Trackers");
                 });
 #pragma warning restore 612, 618
         }

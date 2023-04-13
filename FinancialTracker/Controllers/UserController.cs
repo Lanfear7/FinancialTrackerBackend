@@ -1,13 +1,10 @@
-﻿using FinacialTrackerApplication.Data;
-using FinacialTrackerApplication.Interfaces;
+﻿using FinacialTrackerApplication.Interfaces;
 using FinacialTrackerApplication.Models;
-using FinacialTrackerApplication.Repositories;
 using FinancialTracker.Interfaces;
 using FinancialTracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
+
 
 namespace FinacialTrackerApplication.Controllers
 {

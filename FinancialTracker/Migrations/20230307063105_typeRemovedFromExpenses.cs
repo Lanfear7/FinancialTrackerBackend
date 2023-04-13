@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinancialTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class addedMonthlyIncomeonUser : Migration
+    public partial class typeRemovedFromExpenses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,28 @@ namespace FinancialTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Expenses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExpenseName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<float>(type: "real", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Expenses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Expenses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Trackers",
                 columns: table => new
                 {
@@ -75,16 +97,17 @@ namespace FinancialTracker.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Amount = table.Column<float>(type: "real", nullable: false),
+                    TrackerId = table.Column<int>(type: "int", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Transactions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transactions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Transactions_Trackers_TrackerId",
+                        column: x => x.TrackerId,
+                        principalTable: "Trackers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -95,14 +118,19 @@ namespace FinancialTracker.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Expenses_UserId",
+                table: "Expenses",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trackers_UserId",
                 table: "Trackers",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_UserId",
+                name: "IX_Transactions_TrackerId",
                 table: "Transactions",
-                column: "UserId");
+                column: "TrackerId");
         }
 
         /// <inheritdoc />
@@ -112,10 +140,13 @@ namespace FinancialTracker.Migrations
                 name: "Budgets");
 
             migrationBuilder.DropTable(
-                name: "Trackers");
+                name: "Expenses");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "Trackers");
 
             migrationBuilder.DropTable(
                 name: "Users");
